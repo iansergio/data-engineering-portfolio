@@ -3,3 +3,5 @@ python-dotenv
 azure-storage-blob
 pandas
 pyarrow
+sqlalchemy
+psycopg2-binary

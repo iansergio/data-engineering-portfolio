@@ -8,6 +8,8 @@ import requests
 from dotenv import load_dotenv
 from azure.storage.blob import BlobServiceClient
 
+from database import engine
+
 load_dotenv()
 
 CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
@@ -65,3 +67,19 @@ blob_client.upload_blob(
 )
 
 print(f"Arquivo enviado para: {blob_path}")
+
+df = df.rename(
+    columns={
+        "timestamp": "observation_time"
+    }
+)
+
+df.to_sql(
+    name="weather",
+    schema="staging",
+    con=engine,
+    if_exists="append",
+    index=False
+)
+
+print("Dados inseridos no PostgreSQL.")
